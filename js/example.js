@@ -10,12 +10,12 @@ function init() {
 }
 
 function createQuestionnaire() {
-     var configs = [
-     ["question01", "characters", 2000, "What is you name?", "text", null],
-     ["question02", "characters", 2000,  "Where do you live?", "text", null],
-     ["question03", "number", 2, "What is your age?", "text", null]
-     ];
+    var configs = [
+    ["question01", "characters", 2000, "What is you name?", "text", null],
+    ["question02", "characters", 2000,  "Where do you live?", "text", null],
+    ["question03", "number", 2, "What is your age?", "text", null]
+    ];
 
-     var questions = QuestionnaireJS.questions(configs);
-     return QuestionnaireJS.newQuestionnaire("exampleQuestionnaire", "Example", questions).questionnaire();
+    var questionnaire = QuestionnaireJS.newQuestionnaire("exampleQuestionnaire", "Example", configs);
+    return questionnaire.fieldset();
 }

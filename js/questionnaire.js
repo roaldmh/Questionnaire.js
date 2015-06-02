@@ -8,7 +8,7 @@ var QuestionnaireJS = (function() {
         this.title = title;
         this.questions = questions;
 
-        this.questionnaire = function() {
+        this.fieldset = function() {
             var fieldset = document.createElement("fieldset");
             var legend = document.createElement("legend");
             legend.innerHTML = title;
@@ -43,15 +43,16 @@ var QuestionnaireJS = (function() {
     }
 
     return {
-        questions: function(configs) {
-            var newQuestions = [];
-            for (var i = 0; i < configs.length; i++) {
-                newQuestions.push(new Question(configs[i]));
-            }
-            return newQuestions;
-        },
+        newQuestionnaire: function (id, title, configs) {
 
-        newQuestionnaire: function (id, title, questions) {
+            var questions = (function(configs) {
+                var newQuestions = [];
+                for (var i = 0; i < configs.length; i++) {
+                    newQuestions.push(new Question(configs[i]));
+                }
+                return newQuestions;
+            })(configs);
+
             return new Questionnaire(id, title, questions);
         }
     };
