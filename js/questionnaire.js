@@ -6,17 +6,10 @@
 var QuestionnaireJS = (function() {
 
     function Questionnaire(definition) {
-        this.id = definition.id;
-        this.title = definition.title;
-        this.description = definition.description;
-        this.fieldsetDefinitions = definition.fieldsetDefinitions;
         var questionSets = [];
 
-        console.log(definition);
-        console.log(definition.fieldsetDefinitions);
-
-        for (var i = 0; i < definition.fieldsetDefinitions.length; i++) {
-            questionSets.push(new QuestionSet(this.fieldsetDefinitions[i]));
+        for (var i = 0; i < definition.questionSetDefinitions.length; i++) {
+            questionSets.push(new QuestionSet(definition.questionSetDefinitions[i]));
         }
 
         this.print = function() {
@@ -66,11 +59,11 @@ var QuestionnaireJS = (function() {
             questionDiv.appendChild(questionText);
             questionDiv.appendChild(textInput);
 
-            if(definition.subFieldsets != null) {
-                for (var i = 0; i < definition.subFieldsets.length; i++) {
-                    var subQuestionnaireConfig = definition.subFieldsets[i];
+            if(definition.questionSetDefinitions != null) {
+                for (var i = 0; i < definition.questionSetDefinitions.length; i++) {
+                    var subQuestionnaireConfig = definition.questionSetDefinitions[i];
 
-                    var subQuestionSet = new QuestionSet(definition.subFieldsets[i]);
+                    var subQuestionSet = new QuestionSet(definition.questionSetDefinitions[i]);
                     questionDiv.appendChild(subQuestionSet.questions);
                 }
             }
