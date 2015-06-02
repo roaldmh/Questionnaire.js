@@ -84,6 +84,5 @@ function createQuestionnaire() {
     };
 
     var jsonDefinition = JSON.stringify(definition);
-    var questionnaire = QuestionnaireJS.newQuestionnaire(jsonDefinition);
-    return questionnaire.print();
+    return QuestionnaireJS.builder(jsonDefinition).questionnaire();
 }
