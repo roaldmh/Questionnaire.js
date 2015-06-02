@@ -3,6 +3,7 @@
  */
 
 var QuestionnaireJS = (function() {
+
     function Questionnaire(id, title, questions) {
         this.id = id;
         this.title = title;
@@ -15,7 +16,7 @@ var QuestionnaireJS = (function() {
             fieldset.appendChild(legend);
 
             for (var i = 0; i < this.questions.length; i++){
-                fieldset.appendChild(questions[i].getQuestion());
+                fieldset.appendChild(questions[i].question());
             }
 
             return fieldset;
@@ -30,16 +31,19 @@ var QuestionnaireJS = (function() {
         this.inputType = config[4];
         this.subQuestionnaires = config[5];
 
-        this.getQuestion = function() {
+        this.question = function() {
             var questionDiv = document.createElement("div");
             var questionText = document.createElement("p");
             var textInput = document.createElement("input");
+
             textInput.setAttribute("type", this.inputType);
             questionText.innerHTML = this.questionText;
+
             questionDiv.appendChild(questionText);
             questionDiv.appendChild(textInput);
+
             return questionDiv;
-        }
+        };
     }
 
     return {

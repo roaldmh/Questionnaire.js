@@ -10,6 +10,10 @@ function init() {
 }
 
 function createQuestionnaire() {
+    var subConfig = [
+        ["subQuestion01", "characters", 2000, "What was your maiden name?", "text", subConfig]
+    ];
+
     var configs = [
     ["question01", "characters", 2000, "What is you name?", "text", null],
     ["question02", "characters", 2000,  "Where do you live?", "text", null],
