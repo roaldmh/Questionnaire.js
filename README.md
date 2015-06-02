@@ -1,3 +1,3 @@
 # Questionnaire.js
 
-Questionnaire.js is a JavaScript library for building questionnaires.
+A JavaScript library for building questionnaires.
