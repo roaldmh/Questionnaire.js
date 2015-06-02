@@ -71,11 +71,16 @@ var QuestionnaireJS = (function() {
     }
 
     return {
-        builder: function(jsonDefinition) {
-            var definition = JSON.parse(jsonDefinition);
-            return new Questionnaire(definition);
+        builder: function (jsonDefinition) {
+            try {
+                var definition = JSON.parse(jsonDefinition);
+                return new Questionnaire(definition);
+            }
+            catch (error) {
+                throw new Error("QuestionnaireJS: JSON questionnaire definition input error");
+            }
         }
-    };
+    }
 
 })();
 
