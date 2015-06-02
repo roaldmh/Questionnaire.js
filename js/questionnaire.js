@@ -1,63 +1,88 @@
 /**
  * Created by Roald Martin Hamnvik on 01.06.15.
  */
+"use strict";
 
 var QuestionnaireJS = (function() {
 
-    function Questionnaire(id, title, questions) {
-        this.id = id;
-        this.title = title;
-        this.questions = questions;
+    function Questionnaire(definition) {
+        this.id = definition.id;
+        this.title = definition.title;
+        this.description = definition.description;
+        this.fieldsetDefinitions = definition.fieldsetDefinitions;
+        var questionSets = [];
 
-        this.fieldset = function() {
-            var fieldset = document.createElement("fieldset");
-            var legend = document.createElement("legend");
-            legend.innerHTML = title;
-            fieldset.appendChild(legend);
+        console.log(definition);
+        console.log(definition.fieldsetDefinitions);
 
-            for (var i = 0; i < this.questions.length; i++){
-                fieldset.appendChild(questions[i].question());
+        for (var i = 0; i < definition.fieldsetDefinitions.length; i++) {
+            questionSets.push(new QuestionSet(this.fieldsetDefinitions[i]));
+        }
+
+        this.print = function() {
+            var fieldsetsDiv = document.createElement("div");
+            var titleHeading = document.createElement("h1");
+            titleHeading.innerHTML = definition.title;
+            fieldsetsDiv.appendChild(titleHeading);
+
+            for (var j = 0; j < questionSets.length; j++) {
+                fieldsetsDiv.appendChild(questionSets[j].questions);
             }
 
-            return fieldset;
+            return fieldsetsDiv;
         }
     }
 
-    function Question(config) {
-        this.id = config[0];
-        this.valueType = config[1];
-        this.numChar = config[2];
-        this.questionText = config[3];
-        this.inputType = config[4];
-        this.subQuestionnaires = config[5];
+    function QuestionSet(definition) {
+        var questionsArray = [];
 
-        this.question = function() {
+        for (var i = 0; i < definition.questionDefinitions.length; i++) {
+            questionsArray.push(new Question(definition.questionDefinitions[i]));
+        }
+
+        this.questions = (function() {
+            var fieldset = document.createElement("fieldset");
+            var legend = document.createElement("legend");
+            legend.innerHTML = definition.label;
+            fieldset.appendChild(legend);
+
+            for (var i = 0; i < questionsArray.length; i++){
+                fieldset.appendChild(questionsArray[i].question);
+            }
+
+            return fieldset;
+        })()
+    }
+
+    function Question(definition) {
+        this.question = (function() {
             var questionDiv = document.createElement("div");
             var questionText = document.createElement("p");
             var textInput = document.createElement("input");
 
-            textInput.setAttribute("type", this.inputType);
-            questionText.innerHTML = this.questionText;
+            textInput.setAttribute("type", definition.inputType);
+            questionText.innerHTML = definition.text;
 
             questionDiv.appendChild(questionText);
             questionDiv.appendChild(textInput);
 
+            if(definition.subFieldsets != null) {
+                for (var i = 0; i < definition.subFieldsets.length; i++) {
+                    var subQuestionnaireConfig = definition.subFieldsets[i];
+
+                    var subQuestionSet = new QuestionSet(definition.subFieldsets[i]);
+                    questionDiv.appendChild(subQuestionSet.questions);
+                }
+            }
+
             return questionDiv;
-        };
+        })();
     }
 
     return {
-        newQuestionnaire: function (id, title, configs) {
-
-            var questions = (function(configs) {
-                var newQuestions = [];
-                for (var i = 0; i < configs.length; i++) {
-                    newQuestions.push(new Question(configs[i]));
-                }
-                return newQuestions;
-            })(configs);
-
-            return new Questionnaire(id, title, questions);
+        newQuestionnaire: function(jsonDefinition) {
+            var definition = JSON.parse(jsonDefinition);
+            return new Questionnaire(definition);
         }
     };
 
