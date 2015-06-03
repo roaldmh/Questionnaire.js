@@ -66,7 +66,7 @@ function createQuestionnaire() {
                     label: "Personal information",
                     questionDefinitions:
                         [
-                            {id:"questionSet01question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: subQuestionSetDefinitions},
+                            {id:"questionSet01question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: null},
                             {id:"questionSet01question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
                             {id:"questionSet01question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "radio", questionSetDefinitions: null}
                         ]

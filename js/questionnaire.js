@@ -1,11 +1,11 @@
 /**
  * Created by Roald Martin Hamnvik on 01.06.15.
  */
+
 "use strict";
 
 var QuestionnaireJS = (function() {
     var response = {};
-    var answers = [];
 
     function Questionnaire(definition) {
         var questionSets = [];
@@ -35,7 +35,20 @@ var QuestionnaireJS = (function() {
         };
 
         function save() {
+            makeResponse();
+        }
+
+        function makeResponse() {
+            response.questionnaireId = definition.id;
+            response.questionnaireTitle = definition.title;
+            response.questionnaireDescription = definition.description;
+            response.responseId = "QJS_" + definition.id + "_" + new Date().getTime();
+            response.answers = getAnswers();
+        }
+
+        function getAnswers() {
             var questions = document.getElementsByClassName("question");
+            var answers = [];
             for (var i = 0; i < questions.length; i++){
                 var div = questions[i];
                 var id = div.getAttribute("id");
@@ -44,12 +57,8 @@ var QuestionnaireJS = (function() {
                 var input = div.lastChild;
                 var answer = input.value;
                 answers.push(new Answer(id, question, answer));
-                response.questionnaireId = definition.id;
-                response.questionnaireTitle = definition.title;
-                response.questionnaireDescription = definition.description;
-                response.responseId = "QJS_" + definition.id + "_" + new Date().getTime();
-                response.answers = answers;
             }
+            return answers
         }
     }
 
@@ -126,5 +135,3 @@ var QuestionnaireJS = (function() {
     }
 
 })();
-
-
