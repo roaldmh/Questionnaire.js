@@ -4,8 +4,8 @@
 "use strict";
 
 var QuestionnaireJS = (function() {
-    var answers = [];
     var response = {};
+    var answers = [];
 
     function Questionnaire(definition) {
         var questionSets = [];
@@ -111,7 +111,7 @@ var QuestionnaireJS = (function() {
     }
 
     return {
-        builder: function(jsonDefinition) {
+        build: function(jsonDefinition) {
             try {
                 var definition = JSON.parse(jsonDefinition);
                 return new Questionnaire(definition);
