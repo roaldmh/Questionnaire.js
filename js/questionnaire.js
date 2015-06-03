@@ -4,8 +4,8 @@
 "use strict";
 
 var QuestionnaireJS = (function() {
-    var globalQuestionsArray;
-    var globalAnswersArray = [];
+    var answers = [];
+    var response = {};
 
     function Questionnaire(definition) {
         var questionSets = [];
@@ -34,15 +34,22 @@ var QuestionnaireJS = (function() {
             return questionSetsDiv;
         };
 
-        function save(e) {
-            globalQuestionsArray = document.getElementsByClassName("question");
-            for (var i = 0; i < globalQuestionsArray.length; i++){
-                var div = globalQuestionsArray[i];
+        function save() {
+            var questions = document.getElementsByClassName("question");
+            for (var i = 0; i < questions.length; i++){
+                var div = questions[i];
+                var id = div.getAttribute("id");
+                var p = div.firstChild;
+                var question = p.firstChild.data;
                 var input = div.lastChild;
                 var answer = input.value;
-                globalAnswersArray.push(answer);
+                answers.push(new Answer(id, question, answer));
+                response.questionnaireId = definition.id;
+                response.questionnaireTitle = definition.title;
+                response.questionnaireDescription = definition.description;
+                response.responseId = "QJS_" + definition.id + "_" + new Date().getTime();
+                response.answers = answers;
             }
-
         }
     }
 
@@ -95,23 +102,27 @@ var QuestionnaireJS = (function() {
         })();
     }
 
+    function Answer(id, question, answer) {
+        return {
+            id: id,
+            question: question,
+            answer: answer
+        }
+    }
+
     return {
         builder: function(jsonDefinition) {
-            // TODO: uncomment when finished
-            //try {
-            //    var definition = JSON.parse(jsonDefinition);
-            //    return new Questionnaire(definition);
-            //}
-            //catch (error) {
-            //    throw new Error("QuestionnaireJS: JSON questionnaire definition input error");
-            //}
-
-            // TODO: delete when finished
-            var definition = JSON.parse(jsonDefinition);
-            return new Questionnaire(definition);
+            try {
+                var definition = JSON.parse(jsonDefinition);
+                return new Questionnaire(definition);
+            }
+            catch (error) {
+                throw new Error("QuestionnaireJS: JSON questionnaire definition input error");
+            }
         },
-        questions: globalQuestionsArray,
-        answers: globalAnswersArray
+        response: function () {
+            return JSON.stringify(response);
+        }
     }
 
 })();
