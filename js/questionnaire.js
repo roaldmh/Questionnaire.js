@@ -4,6 +4,7 @@
 "use strict";
 
 var QuestionnaireJS = (function() {
+    var questionsArray = [];
 
     function Questionnaire(definition) {
         var questionSets = [];
@@ -38,7 +39,6 @@ var QuestionnaireJS = (function() {
     }
 
     function QuestionSet(definition) {
-        var questionsArray = [];
 
         for (var i = 0; i < definition.questionDefinitions.length; i++) {
             questionsArray.push(new Question(definition.questionDefinitions[i]));

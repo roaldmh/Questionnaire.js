@@ -16,43 +16,43 @@ function createQuestionnaire() {
     var id = "exampleQuestionnaire";
     var title = "Example";
 
-    var subSubFieldsetDefinition = [
+    var subSubQuestionSetDefinitions = [
         {
-            id:"fieldset02",
+            id:"fieldset05",
             label: "Personal information",
             questionDefinitions:
                 [
-                    {id:"question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: null},
-                    {id:"question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
-                    {id:"question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "text", questionSetDefinitions: null}
+                    {id:"fieldset05question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: null},
+                    {id:"fieldset05question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
+                    {id:"fieldset05question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "text", questionSetDefinitions: null}
                 ]
         },
     ];
 
-    var questionSetDefinitions=
+    var subQuestionSetDefinitions=
         [
             {
-                id:"fieldset01",
+                id:"fieldset03",
                 label: "Personal information",
                 questionDefinitions:
                     [
-                        {id:"question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: subSubFieldsetDefinition},
-                        {id:"question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
-                        {id:"question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "text", questionSetDefinitions: null}
+                        {id:"fieldset03question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: subSubQuestionSetDefinitions},
+                        {id:"fieldset03question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
+                        {id:"fieldset03question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "text", questionSetDefinitions: null}
                     ]
             },
             {
-                id:"fieldset02",
+                id:"fieldset04",
                 label: "Contact information",
                 questionDefinitions:  [
-                    {id:"question01", valueType: "characters", numChar: 2000, text: "Adresse:", inputType: "text", questionSetDefinitions: null},
-                    {id:"question02", valueType: "characters", numChar: 2000, text: "Zip code:", inputType: "text", questionSetDefinitions: null},
-                    {id:"question03", valueType: "characters", numChar: 2000, text: "City:", inputType: "text", questionSetDefinitions: null}
+                    {id:"fieldset04question01", valueType: "characters", numChar: 2000, text: "Adresse:", inputType: "text", questionSetDefinitions: null},
+                    {id:"fieldset04question02", valueType: "characters", numChar: 2000, text: "Zip code:", inputType: "text", questionSetDefinitions: null},
+                    {id:"fieldset04question03", valueType: "characters", numChar: 2000, text: "City:", inputType: "text", questionSetDefinitions: null}
                 ]
             }
         ];
 
-    var definition = {
+    var questionnaireDefinition = {
         id: "ExampleQuestionnaire01",
         title: "Example 1",
         description: "This is an example questionnaire made by using QuestionnaireJS. " +
@@ -66,23 +66,23 @@ function createQuestionnaire() {
                     label: "Personal information",
                     questionDefinitions:
                         [
-                            {id:"question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: null},
-                            {id:"question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
-                            {id:"question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "radio", questionSetDefinitions: questionSetDefinitions}
+                            {id:"fieldset01question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: null},
+                            {id:"fieldset01question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
+                            {id:"question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "radio", questionSetDefinitions: subQuestionSetDefinitions}
                         ]
                 },
                 {
                     id:"fieldset02",
                     label: "Contact information",
                     questionDefinitions:  [
-                        {id:"question01", valueType: "characters", numChar: 2000, text: "Adresse:", inputType: "text", questionSetDefinitions: null},
-                        {id:"question02", valueType: "characters", numChar: 2000, text: "Zip code:", inputType: "text", questionSetDefinitions: null},
-                        {id:"question03", valueType: "characters", numChar: 2000, text: "City:", inputType: "text", questionSetDefinitions: null}
+                        {id:"fieldset02question01", valueType: "characters", numChar: 2000, text: "Adresse:", inputType: "text", questionSetDefinitions: null},
+                        {id:"fieldset02question02", valueType: "characters", numChar: 2000, text: "Zip code:", inputType: "text", questionSetDefinitions: null},
+                        {id:"fieldset02question03", valueType: "characters", numChar: 2000, text: "City:", inputType: "text", questionSetDefinitions: null}
                     ]
                 }
             ]
     };
 
-    var jsonDefinition = JSON.stringify(definition);
+    var jsonDefinition = JSON.stringify(questionnaireDefinition);
     return QuestionnaireJS.builder(jsonDefinition).questionnaire();
 }
