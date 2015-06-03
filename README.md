@@ -7,7 +7,7 @@ The following features are implemented:
 - Given a valid JSON definition file, a questionnaire will be generated as HTML on your webpage.
 - Form inputs: 
  - input type=text
-- Multiple sets of questions, implemented in fieldsets
+- Multiple sets of questions, implemented as fieldsets
 - Nesting of question sets 
 
 Road map:

@@ -22,7 +22,18 @@ var QuestionnaireJS = (function() {
                 questionSetsDiv.appendChild(questionSets[j].questions);
             }
 
+            var submitButton = document.createElement("input");
+            submitButton.setAttribute("type", "button");
+            submitButton.setAttribute("value", "Submit questionnaire");
+            submitButton.onclick = save;
+
+            questionSetsDiv.appendChild(submitButton);
+
             return questionSetsDiv;
+        };
+
+        function save(e) {
+            alert("Save: " + e.target);
         }
     }
 
