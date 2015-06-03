@@ -4,7 +4,7 @@
 "use strict";
 
 var QuestionnaireJS = (function() {
-    var globalQuestionsArray = [];
+    var globalQuestionsArray;
     var globalAnswersArray = [];
 
     function Questionnaire(definition) {
@@ -35,7 +35,14 @@ var QuestionnaireJS = (function() {
         };
 
         function save(e) {
-            alert("Save: " + e.target);
+            globalQuestionsArray = document.getElementsByClassName("question");
+            for (var i = 0; i < globalQuestionsArray.length; i++){
+                var div = globalQuestionsArray[i];
+                var input = div.lastChild;
+                var answer = input.value;
+                globalAnswersArray.push(answer);
+            }
+
         }
     }
 
@@ -57,7 +64,6 @@ var QuestionnaireJS = (function() {
             for (var i = 0; i < localQuestionsArray.length; i++){
                 var questionDiv = localQuestionsArray[i].question;
                 fieldset.appendChild(questionDiv);
-                globalQuestionsArray.push(questionDiv);
             }
 
             return fieldset;
@@ -91,15 +97,20 @@ var QuestionnaireJS = (function() {
 
     return {
         builder: function(jsonDefinition) {
-            try {
-                var definition = JSON.parse(jsonDefinition);
-                return new Questionnaire(definition);
-            }
-            catch (error) {
-                throw new Error("QuestionnaireJS: JSON questionnaire definition input error");
-            }
-        },
+            // TODO: uncomment when finished
+            //try {
+            //    var definition = JSON.parse(jsonDefinition);
+            //    return new Questionnaire(definition);
+            //}
+            //catch (error) {
+            //    throw new Error("QuestionnaireJS: JSON questionnaire definition input error");
+            //}
 
+            // TODO: delete when finished
+            var definition = JSON.parse(jsonDefinition);
+            return new Questionnaire(definition);
+        },
+        questions: globalQuestionsArray,
         answers: globalAnswersArray
     }
 
