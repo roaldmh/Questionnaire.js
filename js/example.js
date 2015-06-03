@@ -68,7 +68,7 @@ function createQuestionnaire() {
                         [
                             {id:"fieldset01question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: null},
                             {id:"fieldset01question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
-                            {id:"question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "radio", questionSetDefinitions: subQuestionSetDefinitions}
+                            {id:"fieldset01question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "radio", questionSetDefinitions: subQuestionSetDefinitions}
                         ]
                 },
                 {
