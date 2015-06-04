@@ -52,8 +52,8 @@ var QuestionnaireJS = (function() {
             for (var i = 0; i < questions.length; i++){
                 var div = questions[i];
                 var id = div.getAttribute("id");
-                var p = div.firstChild;
-                var question = p.firstChild.data;
+                var questionP = div.firstChild;
+                var question = questionP.firstChild.data;
                 var input = div.lastChild;
                 var answer = input.value;
                 answers.push(new Answer(id, question, answer));
