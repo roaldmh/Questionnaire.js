@@ -1,9 +1,11 @@
 /**
  * Created by Roald Martin Hamnvik on 01.06.15.
  */
+
 "use strict";
 
 var QuestionnaireJS = (function() {
+    var response = {};
 
     function Questionnaire(definition) {
         var questionSets = [];
@@ -32,26 +34,52 @@ var QuestionnaireJS = (function() {
             return questionSetsDiv;
         };
 
-        function save(e) {
-            alert("Save: " + e.target);
+        function save() {
+            makeResponse();
+        }
+
+        function makeResponse() {
+            response.questionnaireId = definition.id;
+            response.questionnaireTitle = definition.title;
+            response.questionnaireDescription = definition.description;
+            response.responseId = "QJS_" + definition.id + "_" + new Date().getTime();
+            response.answers = getAnswers();
+        }
+
+        function getAnswers() {
+            var questions = document.getElementsByClassName("question");
+            var answers = [];
+            for (var i = 0; i < questions.length; i++){
+                var div = questions[i];
+                var id = div.getAttribute("id");
+                var questionP = div.firstChild;
+                var question = questionP.firstChild.data;
+                var input = div.lastChild;
+                var answer = input.value;
+                answers.push(new Answer(id, question, answer));
+            }
+            return answers
         }
     }
 
     function QuestionSet(definition) {
-        var questionsArray = [];
-
+        var localQuestionsArray = [];
         for (var i = 0; i < definition.questionDefinitions.length; i++) {
-            questionsArray.push(new Question(definition.questionDefinitions[i]));
+            localQuestionsArray.push(new Question(definition.questionDefinitions[i]));
         }
 
         this.questions = (function() {
-            var fieldset = document.createElement("fieldset");
             var legend = document.createElement("legend");
+            legend.setAttribute("class", "legend");
             legend.innerHTML = definition.label;
+
+            var fieldset = document.createElement("fieldset");
+            fieldset.setAttribute("class", "fieldset");
             fieldset.appendChild(legend);
 
-            for (var i = 0; i < questionsArray.length; i++){
-                fieldset.appendChild(questionsArray[i].question);
+            for (var i = 0; i < localQuestionsArray.length; i++){
+                var questionDiv = localQuestionsArray[i].question;
+                fieldset.appendChild(questionDiv);
             }
 
             return fieldset;
@@ -60,13 +88,15 @@ var QuestionnaireJS = (function() {
 
     function Question(definition) {
         this.question = (function() {
-            var questionDiv = document.createElement("div");
-            var questionText = document.createElement("p");
             var textInput = document.createElement("input");
-
             textInput.setAttribute("type", definition.inputType);
+
+            var questionText = document.createElement("p");
             questionText.innerHTML = definition.text;
 
+            var questionDiv = document.createElement("div");
+            questionDiv.setAttribute("id", definition.id);
+            questionDiv.setAttribute("class", "question");
             questionDiv.appendChild(questionText);
             questionDiv.appendChild(textInput);
 
@@ -81,8 +111,16 @@ var QuestionnaireJS = (function() {
         })();
     }
 
+    function Answer(id, question, answer) {
+        return {
+            id: id,
+            question: question,
+            answer: answer
+        }
+    }
+
     return {
-        builder: function (jsonDefinition) {
+        build: function(jsonDefinition) {
             try {
                 var definition = JSON.parse(jsonDefinition);
                 return new Questionnaire(definition);
@@ -90,9 +128,10 @@ var QuestionnaireJS = (function() {
             catch (error) {
                 throw new Error("QuestionnaireJS: JSON questionnaire definition input error");
             }
+        },
+        response: function () {
+            return JSON.stringify(response);
         }
     }
 
 })();
-
-

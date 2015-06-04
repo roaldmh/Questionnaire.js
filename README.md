@@ -9,8 +9,18 @@ The following features are implemented:
  - input type=text
 - Multiple sets of questions, implemented as fieldsets
 - Nesting of question sets 
+- Generates a JSON questionnaire response file containing questionnaire information and all the questions with the answers
 
 Road map:
 
-- Generate a JSON questionnaire response file containing all the questions with the answers
+- More form inputs:
+ - multiple line input: textarea
+ - single choice list: radio buttons, drop down list
+ - multiple choice list: check boxes
+- Validate input:
+ - Check for empty
+ - Validate numerical input
+- Style class arrays for the different parts of the form in JSON definition file
+
+
 
