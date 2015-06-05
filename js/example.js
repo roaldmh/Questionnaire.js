@@ -75,7 +75,16 @@ function createQuestionnaire() {
                         [
                             {id:"questionSet01question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: null},
                             {id:"questionSet01question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
-                            {id:"questionSet01question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "radio", questionSetDefinitions: null}
+                            {id:"questionSet01question03", valueType: "characters", numChar: 2000, text: "Tell us about yourself:", inputType: "textarea", questionSetDefinitions: null},
+                            {id:"questionSet01question04",
+                                valueType: "characters",
+                                numChar: 2000,
+                                text: "Gender:",
+                                inputType: "radio",
+                                name: "gender",
+                                values: ["male", "female", "mix"],
+                                texts: ["Male", "Female", "Mix"],
+                                questionSetDefinitions: null}
                         ]
                 },
                 {
@@ -86,6 +95,20 @@ function createQuestionnaire() {
                         {id:"questionSet02question02", valueType: "characters", numChar: 2000, text: "Zip code:", inputType: "text", questionSetDefinitions: null},
                         {id:"questionSet02question03", valueType: "characters", numChar: 2000, text: "City:", inputType: "text", questionSetDefinitions: null}
                     ]
+                },
+                {
+                    id:"questionSet05",
+                    label: "Study program interests",
+                    questionDefinitions:  [
+                        {id:"questionSet05question01",
+                            valueType: "characters",
+                            numChar: 2000, text: "Study programs:",
+                            inputType: "checkbox",
+                            name: "StudyPrograms",
+                            values: ["Mathematics", "Physics", "Chemistry", "Biology"],
+                            texts: ["Mathematics", "Physics", "Chemistry", "Biology"],
+                            questionSetDefinitions: null}
+                    ]
                 }
             ]
     };
@@ -95,5 +118,7 @@ function createQuestionnaire() {
 }
 
 function save() {
+    var utP = document.getElementById("ut");
+    utP.innerHTML = QuestionnaireJS.response();
     console.log(QuestionnaireJS.response());
 }

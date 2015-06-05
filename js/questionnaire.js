@@ -5,32 +5,10 @@
 "use strict";
 
 var QuestionnaireJS = (function() {
+
     var questionnaireDefinition;
 
-    function makeResponse() {
-        var response = {};
-        response.questionnaireDefinition = questionnaireDefinition.id;
-        response.questionnaireTitle = questionnaireDefinition.title;
-        response.questionnaireDescription = questionnaireDefinition.description;
-        response.responseId = "QJS_" + questionnaireDefinition.id + "_" + new Date().getTime();
-        response.answers = getAnswers();
-        return response;
-    }
-
-    function getAnswers() {
-        var questions = document.getElementsByClassName("question");
-        var answers = [];
-        for (var i = 0; i < questions.length; i++){
-            var div = questions[i];
-            var id = div.getAttribute("id");
-            var questionP = div.firstChild;
-            var question = questionP.firstChild.data;
-            var input = div.lastChild;
-            var answer = input.value;
-            answers.push(new Answer(id, question, answer));
-        }
-        return answers
-    }
+// --- CONSTRUCTOR FUNCTIONS ---
 
     function Questionnaire(definition) {
         questionnaireDefinition = definition;
@@ -80,17 +58,19 @@ var QuestionnaireJS = (function() {
 
     function Question(definition) {
         this.question = (function() {
-            var textInput = document.createElement("input");
-            textInput.setAttribute("type", definition.inputType);
+
+            var input = createInput(definition);
+
 
             var questionText = document.createElement("p");
             questionText.innerHTML = definition.text;
+            questionText.setAttribute("class", "questionText");
 
             var questionDiv = document.createElement("div");
             questionDiv.setAttribute("id", definition.id);
             questionDiv.setAttribute("class", "question");
             questionDiv.appendChild(questionText);
-            questionDiv.appendChild(textInput);
+            questionDiv.appendChild(input);
 
             if(definition.questionSetDefinitions != null) {
                 for (var i = 0; i < definition.questionSetDefinitions.length; i++) {
@@ -111,18 +91,123 @@ var QuestionnaireJS = (function() {
         }
     }
 
+    function QuestionnaireJsError(message) {
+        this.name = 'QuestionnaireJSError';
+        this.message = message || 'QuestionnaireJS error';
+    }
+    QuestionnaireJsError.prototype = Object.create(Error.prototype);
+    QuestionnaireJsError.prototype.constructor = QuestionnaireJsError;
+
+// --- FUNCTIONS ---
+
+    function createInput(questionDefinition) {
+        switch (questionDefinition.inputType) {
+            case "text":
+                var textInput = document.createElement("INPUT");
+                textInput.setAttribute("type", questionDefinition.inputType);
+                return textInput;
+            case "textarea":
+                var textarea = document.createElement("TEXTAREA");
+                return textarea;
+            case "radio":
+
+                var radioUl = document.createElement("ul");
+                radioUl.setAttribute("class", "radioUl");
+
+                for(var i = 0; i < questionDefinition.values.length; i++) {
+                    var radioLi = document.createElement("li");
+                    radioLi.setAttribute("class", "radioLi");
+
+                    var radio = document.createElement("INPUT");
+                    radio.setAttribute("type", "radio");
+                    radio.setAttribute("name", questionDefinition.name);
+                    radio.setAttribute("value", questionDefinition.values[i]);
+                    radioLi.appendChild(radio);
+
+                    var radioText = document.createElement("span");
+                    radioText.innerHTML = questionDefinition.texts[i];
+                    radioText.setAttribute("class", "radioText");
+                    radioLi.appendChild(radioText);
+
+                    radioUl.appendChild(radioLi);
+                }
+
+                return radioUl;
+
+            case "checkbox":
+
+                var checkboxUl = document.createElement("ul");
+                checkboxUl.setAttribute("class", "checkboxUl");
+
+                for(var i = 0; i < questionDefinition.values.length; i++) {
+                    var checkboxLi = document.createElement("li");
+                    checkboxLi.setAttribute("class", "checkboxLi");
+
+                    var checkbox = document.createElement("INPUT");
+                    checkbox.setAttribute("type", "checkbox");
+                    checkbox.setAttribute("name", questionDefinition.name);
+                    checkbox.setAttribute("value", questionDefinition.values[i]);
+                    checkboxLi.appendChild(checkbox);
+
+                    var checkboxText = document.createElement("span");
+                    checkboxText.innerHTML = questionDefinition.texts[i];
+                    checkboxText.setAttribute("class", "checkboxText");
+                    checkboxLi.appendChild(checkboxText);
+
+                    checkboxUl.appendChild(checkboxLi);
+                }
+
+                return checkboxUl;
+
+            default:
+                throw new QuestionnaireJsError("Input type not supported: " + questionDefinition.inputType);
+        }
+
+
+    }
+
+    function getResponse() {
+        var response = {};
+        response.questionnaireDefinition = questionnaireDefinition.id;
+        response.questionnaireTitle = questionnaireDefinition.title;
+        response.questionnaireDescription = questionnaireDefinition.description;
+        response.responseId = "QJS_" + questionnaireDefinition.id + "_" + new Date().getTime();
+        response.answers = getAnswers();
+        return response;
+    }
+
+    function getAnswers() {
+        var questions = document.getElementsByClassName("question");
+        var answers = [];
+        for (var i = 0; i < questions.length; i++){
+            var div = questions[i];
+            var id = div.getAttribute("id");
+            var questionP = div.firstChild;
+            var question = questionP.firstChild.data;
+            var input = div.lastChild;
+            var answer = input.value;
+            answers.push(new Answer(id, question, answer));
+        }
+        return answers
+    }
+
+
+// --- RETURN OBJECT LITERAL ---
+
     return {
         build: function(jsonDefinition) {
             try {
                 var definition = JSON.parse(jsonDefinition);
-                return new Questionnaire(definition);
             }
             catch (error) {
-                throw new Error("QuestionnaireJS: JSON questionnaire definition input error");
+                throw new QuestionnaireJsError("JSON questionnaire definition input error");
+            }
+            finally {
+                return new Questionnaire(definition);
             }
         },
         response: function () {
-            var response = makeResponse();
+            var response = getResponse();
             return JSON.stringify(response);
         }
     }

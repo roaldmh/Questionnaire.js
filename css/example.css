@@ -7,18 +7,55 @@ h1 {
     font-family: arial;
 }
 
-div .question {
-    color: chocolate;
-    font-family: arial;
+.question {
+
 }
 
-div .legend {
+.questionText {
+    color: chocolate;
+    font-family: arial;
+    margin-bottom: 5px;
+}
+
+.legend {
     color: green;
     font-family: sans-serif;
     font-weight: bolder;
 }
 
-div .fieldset {
+.fieldset {
     margin: 10px;
     background-color: aliceblue;
+}
+
+.radioUl {
+    list-style-type: none;
+}
+
+.radioLi {
+    padding-bottom: 2px;
+}
+
+
+.radioText {
+    color: dimgrey;
+    font-weight: normal;
+    margin-bottom: 0px;
+    margin-left: 5px;
+}
+
+.checkboxUl {
+    list-style-type: none;
+}
+
+.checkboxLi {
+    padding-bottom: 2px;
+}
+
+
+.checkboxText {
+    color: dimgrey;
+    font-weight: normal;
+    margin-bottom: 0px;
+    margin-left: 5px;
 }
