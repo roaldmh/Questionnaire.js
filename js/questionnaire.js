@@ -6,8 +6,33 @@
 
 var QuestionnaireJS = (function() {
     var response = {};
+    var questionnaireDefinition;
+
+    function makeResponse() {
+        response.questionnaireDefinition = questionnaireDefinition.id;
+        response.questionnaireTitle = questionnaireDefinition.title;
+        response.questionnaireDescription = questionnaireDefinition.description;
+        response.responseId = "QJS_" + questionnaireDefinition.id + "_" + new Date().getTime();
+        response.answers = getAnswers();
+    }
+
+    function getAnswers() {
+        var questions = document.getElementsByClassName("question");
+        var answers = [];
+        for (var i = 0; i < questions.length; i++){
+            var div = questions[i];
+            var id = div.getAttribute("id");
+            var questionP = div.firstChild;
+            var question = questionP.firstChild.data;
+            var input = div.lastChild;
+            var answer = input.value;
+            answers.push(new Answer(id, question, answer));
+        }
+        return answers
+    }
 
     function Questionnaire(definition) {
+        questionnaireDefinition = definition;
         var questionSets = [];
 
         for (var i = 0; i < definition.questionSetDefinitions.length; i++) {
@@ -24,42 +49,8 @@ var QuestionnaireJS = (function() {
                 questionSetsDiv.appendChild(questionSets[j].questions);
             }
 
-            var submitButton = document.createElement("input");
-            submitButton.setAttribute("type", "button");
-            submitButton.setAttribute("value", "Submit questionnaire");
-            submitButton.onclick = save;
-
-            questionSetsDiv.appendChild(submitButton);
-
             return questionSetsDiv;
         };
-
-        function save() {
-            makeResponse();
-        }
-
-        function makeResponse() {
-            response.questionnaireId = definition.id;
-            response.questionnaireTitle = definition.title;
-            response.questionnaireDescription = definition.description;
-            response.responseId = "QJS_" + definition.id + "_" + new Date().getTime();
-            response.answers = getAnswers();
-        }
-
-        function getAnswers() {
-            var questions = document.getElementsByClassName("question");
-            var answers = [];
-            for (var i = 0; i < questions.length; i++){
-                var div = questions[i];
-                var id = div.getAttribute("id");
-                var questionP = div.firstChild;
-                var question = questionP.firstChild.data;
-                var input = div.lastChild;
-                var answer = input.value;
-                answers.push(new Answer(id, question, answer));
-            }
-            return answers
-        }
     }
 
     function QuestionSet(definition) {
@@ -130,6 +121,7 @@ var QuestionnaireJS = (function() {
             }
         },
         response: function () {
+            makeResponse();
             return JSON.stringify(response);
         }
     }

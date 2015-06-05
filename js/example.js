@@ -9,6 +9,13 @@ window.onload = init;
 function init() {
     var form = document.getElementsByClassName("questionnaireForm").item(0);
     form.appendChild(createQuestionnaire());
+
+    var submitButton = document.createElement("input");
+    submitButton.setAttribute("type", "button");
+    submitButton.setAttribute("value", "Submit questionnaire");
+    submitButton.onclick = save;
+
+    form.appendChild(submitButton);
 }
 
 function createQuestionnaire() {
@@ -85,4 +92,8 @@ function createQuestionnaire() {
 
     var jsonDefinition = JSON.stringify(questionnaireDefinition);
     return QuestionnaireJS.build(jsonDefinition).questionnaire();
+}
+
+function save() {
+    console.log(QuestionnaireJS.response());
 }
