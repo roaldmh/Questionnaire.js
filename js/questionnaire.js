@@ -110,7 +110,6 @@ var QuestionnaireJS = (function() {
                 var textarea = document.createElement("TEXTAREA");
                 return textarea;
             case "radio":
-
                 var radioUl = document.createElement("ul");
                 radioUl.setAttribute("class", "radioUl");
 
@@ -133,9 +132,7 @@ var QuestionnaireJS = (function() {
                 }
 
                 return radioUl;
-
             case "checkbox":
-
                 var checkboxUl = document.createElement("ul");
                 checkboxUl.setAttribute("class", "checkboxUl");
 
@@ -158,7 +155,6 @@ var QuestionnaireJS = (function() {
                 }
 
                 return checkboxUl;
-
             default:
                 throw new QuestionnaireJsError("Input type not supported: " + questionDefinition.inputType);
         }
