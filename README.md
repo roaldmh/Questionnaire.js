@@ -6,7 +6,10 @@ The following features are implemented:
 
 - Given a valid JSON definition file, a questionnaire will be generated as HTML on your webpage.
 - Form inputs: 
- - input type=text
+ - single line: input type=text
+ - multiple line input: textarea
+ - single choice list: radio buttons
+ - multiple choice list: check boxes
 - Multiple sets of questions, implemented as fieldsets
 - Nesting of question sets 
 - Generates a JSON questionnaire response file containing questionnaire information and all the questions with the answers
@@ -14,9 +17,7 @@ The following features are implemented:
 Road map:
 
 - More form inputs:
- - multiple line input: textarea
- - single choice list: radio buttons, drop down list
- - multiple choice list: check boxes
+ - single choice list: drop down list
 - Validate input:
  - Check for empty
  - Validate numerical input
@@ -35,14 +36,18 @@ window.onload = init;
 function init() {
     var form = document.getElementsByClassName("questionnaireForm").item(0);
     form.appendChild(createQuestionnaire());
+
     var submitButton = document.createElement("input");
     submitButton.setAttribute("type", "button");
     submitButton.setAttribute("value", "Submit questionnaire");
+    submitButton.setAttribute("class", "submitButton");
     submitButton.onclick = save;
+
     form.appendChild(submitButton);
 }
 
 function createQuestionnaire() {
+
     var id = "exampleQuestionnaire";
     var title = "Example";
 
@@ -84,7 +89,7 @@ function createQuestionnaire() {
 
     var questionnaireDefinition = {
         id: "ExampleQuestionnaire01",
-        title: "Example 1",
+        title: "Example questionnaire 1",
         description: "This is an example questionnaire made by using QuestionnaireJS. " +
         "You can play around with the configuration and see how that changes the questionnaire. " +
         "This questionnaire uses several questionSets and nested questionSets.",
@@ -98,7 +103,16 @@ function createQuestionnaire() {
                         [
                             {id:"questionSet01question01", valueType: "characters", numChar: 2000, text: "Name:", inputType: "text", questionSetDefinitions: null},
                             {id:"questionSet01question02", valueType: "number", numChar: 3, text: "Age:", inputType: "text", questionSetDefinitions: null},
-                            {id:"questionSet01question03", valueType: "characters", numChar: 1, text: "Gender:", inputType: "radio", questionSetDefinitions: null}
+                            {id:"questionSet01question03", valueType: "characters", numChar: 2000, text: "Tell us about yourself:", inputType: "textarea", questionSetDefinitions: null},
+                            {id:"questionSet01question04",
+                                valueType: "characters",
+                                numChar: 2000,
+                                text: "Gender:",
+                                inputType: "radio",
+                                name: "gender",
+                                values: ["man", "woman"],
+                                texts: ["Man", "Woman"],
+                                questionSetDefinitions: null}
                         ]
                 },
                 {
@@ -109,6 +123,20 @@ function createQuestionnaire() {
                         {id:"questionSet02question02", valueType: "characters", numChar: 2000, text: "Zip code:", inputType: "text", questionSetDefinitions: null},
                         {id:"questionSet02question03", valueType: "characters", numChar: 2000, text: "City:", inputType: "text", questionSetDefinitions: null}
                     ]
+                },
+                {
+                    id:"questionSet05",
+                    label: "Study program interests",
+                    questionDefinitions:  [
+                        {id:"questionSet05question01",
+                            valueType: "characters",
+                            numChar: 2000, text: "Study programs:",
+                            inputType: "checkbox",
+                            name: "StudyPrograms",
+                            values: ["Mathematics", "Physics", "Chemistry", "Biology"],
+                            texts: ["Mathematics", "Physics", "Chemistry", "Biology"],
+                            questionSetDefinitions: subQuestionSetDefinitions}
+                    ]
                 }
             ]
     };
@@ -118,6 +146,8 @@ function createQuestionnaire() {
 }
 
 function save() {
+    var utP = document.getElementById("ut");
+    utP.innerHTML = QuestionnaireJS.response();
     console.log(QuestionnaireJS.response());
 }
 ```
