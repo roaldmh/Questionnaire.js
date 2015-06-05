@@ -110,6 +110,7 @@ var QuestionnaireJS = (function() {
                 return textInput;
             case "textarea":
                 var textarea = document.createElement("TEXTAREA");
+                textarea.setAttribute("class", "textarea");
                 return textarea;
             case "radio":
                 var radioUl = document.createElement("ul");
@@ -182,11 +183,51 @@ var QuestionnaireJS = (function() {
             var id = div.getAttribute("id");
             var questionP = div.firstChild;
             var question = questionP.firstChild.data;
-            var input = div.lastChild;
-            var answer = input.value;
+            var answer = getAnswer(div);
             answers.push(new Answer(id, question, answer));
         }
         return answers
+    }
+
+    function getAnswer(div)  {
+        var answer = "";
+        var input = div.lastChild;
+        var inputStyleClass = input.getAttribute("class");
+        switch(inputStyleClass) {
+            case "textInput":
+                answer = input.value;
+                break;
+            case "textarea":
+                answer = input.value;
+                break;
+            case "radioUl":
+                var liList = input.getElementsByTagName("li");
+                var answers = [];
+                for (var i = 0; i < liList.length; i++) {
+                    var li = liList[i];
+                    var checkBox = li.firstChild;
+                    if(checkBox.checked) {
+                        answer = li.lastChild.innerHTML;
+                        break;
+                    }
+                }
+                break;
+            case "checkboxUl":
+                var liList = input.getElementsByTagName("li");
+                var answers = [];
+                for (var i = 0; i < liList.length; i++) {
+                    var li = liList[i];
+                    var checkBox = li.firstChild;
+                    if(checkBox.checked) {
+                        answers.push(li.lastChild.innerHTML);
+                    }
+                }
+                answer = answers;
+                break;
+            default:
+                throw new QuestionnaireJsError("Input type not supported: " + input.inputType);
+        }
+        return answer;
     }
 
 

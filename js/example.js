@@ -83,8 +83,8 @@ function createQuestionnaire() {
                                 text: "Gender:",
                                 inputType: "radio",
                                 name: "gender",
-                                values: ["male", "female"],
-                                texts: ["Male", "Female"],
+                                values: ["man", "woman"],
+                                texts: ["Man", "Woman"],
                                 questionSetDefinitions: null}
                         ]
                 },
@@ -108,7 +108,7 @@ function createQuestionnaire() {
                             name: "StudyPrograms",
                             values: ["Mathematics", "Physics", "Chemistry", "Biology"],
                             texts: ["Mathematics", "Physics", "Chemistry", "Biology"],
-                            questionSetDefinitions: null}
+                            questionSetDefinitions: subQuestionSetDefinitions}
                     ]
                 }
             ]
