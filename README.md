@@ -25,9 +25,9 @@ Road map:
 How to use:
 
 - Drop the questionnaire.js file into your project
-- Create a a html form ```xml <form class="questionnaireForm">...</form>``` in your webpage
+- Create a html form ``` <form class="questionnaireForm">...</form>``` in your web page
 - In a javascript file set up something like the script below.
-- Notice that you add the submit button yourself and set up the event handler to use ```QuestionnaireJS.response()``` to get the response json file.
+- Notice that you add the submit button yourself and set up the event handler to use ```QuestionnaireJS.response()``` to get the response json file
 
 ```javascript
 window.onload = init;
