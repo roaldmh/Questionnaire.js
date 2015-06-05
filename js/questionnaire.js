@@ -5,15 +5,16 @@
 "use strict";
 
 var QuestionnaireJS = (function() {
-    var response = {};
     var questionnaireDefinition;
 
     function makeResponse() {
+        var response = {};
         response.questionnaireDefinition = questionnaireDefinition.id;
         response.questionnaireTitle = questionnaireDefinition.title;
         response.questionnaireDescription = questionnaireDefinition.description;
         response.responseId = "QJS_" + questionnaireDefinition.id + "_" + new Date().getTime();
         response.answers = getAnswers();
+        return response;
     }
 
     function getAnswers() {
@@ -121,7 +122,7 @@ var QuestionnaireJS = (function() {
             }
         },
         response: function () {
-            makeResponse();
+            var response = makeResponse();
             return JSON.stringify(response);
         }
     }
