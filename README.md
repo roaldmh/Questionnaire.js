@@ -28,10 +28,12 @@ How to use:
 - Create a a html form     <form class="questionnaireForm">...</form> in your webpage
 - In a javascript file set up something like this:
 
+
+window.onload = init;
+
 function init() {
     var form = document.getElementsByClassName("questionnaireForm").item(0);
     form.appendChild(createQuestionnaire());
-
     var submitButton = document.createElement("input");
     submitButton.setAttribute("type", "button");
     submitButton.setAttribute("value", "Submit questionnaire");
@@ -39,7 +41,6 @@ function init() {
 
     form.appendChild(submitButton);
 }
-
 
 function createQuestionnaire() {
 
@@ -119,6 +120,6 @@ function createQuestionnaire() {
 
 function save() {
     console.log(QuestionnaireJS.response());
-}
+}`
 
 
