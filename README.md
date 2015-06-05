@@ -28,7 +28,7 @@ How to use:
 - Create a a html form     <form class="questionnaireForm">...</form> in your webpage
 - In a javascript file set up something like this:
 
-
+```javascript
 window.onload = init;
 
 function init() {
@@ -38,12 +38,10 @@ function init() {
     submitButton.setAttribute("type", "button");
     submitButton.setAttribute("value", "Submit questionnaire");
     submitButton.onclick = save;
-
     form.appendChild(submitButton);
 }
 
 function createQuestionnaire() {
-
     var id = "exampleQuestionnaire";
     var title = "Example";
 
@@ -120,6 +118,7 @@ function createQuestionnaire() {
 
 function save() {
     console.log(QuestionnaireJS.response());
-}`
+}
+```
 
 
