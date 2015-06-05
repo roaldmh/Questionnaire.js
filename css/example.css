@@ -3,29 +3,51 @@
  */
 
 h1 {
-    color: dimgrey;
-    font-family: arial;
+    font-size: larger;
+    margin-left: 16px;
 }
 
-.question {
-
+textarea {
+    width: 400px;
+    height: 100px;
+    border-color: #ddd;
+    font-size: medium;
 }
 
-.questionText {
-    color: chocolate;
-    font-family: arial;
-    margin-bottom: 5px;
+.textInput {
+    width: 400px;
+    height: 20px;
+    font-size: medium;
 }
 
-.legend {
-    color: green;
-    font-family: sans-serif;
-    font-weight: bolder;
+.questionnaire {
+    border: solid thin;
+    width: 80%;
+    margin: auto;
+    background-color: aliceblue;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.questionnaireForm {
+    margin: auto;
+    font-family: verdana;
+    color: #444444;
 }
 
 .fieldset {
-    margin: 10px;
-    background-color: aliceblue;
+    background-color: #eee;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.legend {
+    font-weight: bolder;
+}
+
+.questionText {
+    margin-bottom: 5px;
 }
 
 .radioUl {
@@ -38,7 +60,6 @@ h1 {
 
 
 .radioText {
-    color: dimgrey;
     font-weight: normal;
     margin-bottom: 0px;
     margin-left: 5px;
@@ -54,8 +75,21 @@ h1 {
 
 
 .checkboxText {
-    color: dimgrey;
     font-weight: normal;
     margin-bottom: 0px;
     margin-left: 5px;
+}
+
+.submitButton {
+    background-color: lightgrey;
+    border: solid thin;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius:6px;
+    border-color: #999;
+    color: #444;
+    font-family: verdana;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 2px;
 }

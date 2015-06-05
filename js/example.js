@@ -13,6 +13,7 @@ function init() {
     var submitButton = document.createElement("input");
     submitButton.setAttribute("type", "button");
     submitButton.setAttribute("value", "Submit questionnaire");
+    submitButton.setAttribute("class", "submitButton");
     submitButton.onclick = save;
 
     form.appendChild(submitButton);
@@ -61,7 +62,7 @@ function createQuestionnaire() {
 
     var questionnaireDefinition = {
         id: "ExampleQuestionnaire01",
-        title: "Example 1",
+        title: "Example questionnaire 1",
         description: "This is an example questionnaire made by using QuestionnaireJS. " +
         "You can play around with the configuration and see how that changes the questionnaire. " +
         "This questionnaire uses several questionSets and nested questionSets.",
@@ -82,8 +83,8 @@ function createQuestionnaire() {
                                 text: "Gender:",
                                 inputType: "radio",
                                 name: "gender",
-                                values: ["male", "female", "mix"],
-                                texts: ["Male", "Female", "Mix"],
+                                values: ["male", "female"],
+                                texts: ["Male", "Female"],
                                 questionSetDefinitions: null}
                         ]
                 },

@@ -19,16 +19,17 @@ var QuestionnaireJS = (function() {
         }
 
         this.questionnaire = function() {
-            var questionSetsDiv = document.createElement("div");
+            var questionnaireDiv = document.createElement("div");
+            questionnaireDiv.setAttribute("class", "questionnaireForm");
             var titleHeading = document.createElement("h1");
             titleHeading.innerHTML = definition.title;
-            questionSetsDiv.appendChild(titleHeading);
+            questionnaireDiv.appendChild(titleHeading);
 
             for (var j = 0; j < questionSets.length; j++) {
-                questionSetsDiv.appendChild(questionSets[j].questions);
+                questionnaireDiv.appendChild(questionSets[j].questions);
             }
 
-            return questionSetsDiv;
+            return questionnaireDiv;
         };
     }
 
@@ -105,6 +106,7 @@ var QuestionnaireJS = (function() {
             case "text":
                 var textInput = document.createElement("INPUT");
                 textInput.setAttribute("type", questionDefinition.inputType);
+                textInput.setAttribute("class", "textInput");
                 return textInput;
             case "textarea":
                 var textarea = document.createElement("TEXTAREA");
@@ -198,9 +200,8 @@ var QuestionnaireJS = (function() {
             catch (error) {
                 throw new QuestionnaireJsError("JSON questionnaire definition input error");
             }
-            finally {
-                return new Questionnaire(definition);
-            }
+
+            return new Questionnaire(definition);
         },
         response: function () {
             var response = getResponse();
