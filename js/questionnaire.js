@@ -26,7 +26,11 @@ var QuestionnaireJS = (function() {
             questionnaireDiv.appendChild(titleHeading);
 
             for (var j = 0; j < questionSets.length; j++) {
-                questionnaireDiv.appendChild(questionSets[j].questions);
+                var qst = questionSets[j];
+                console.log(qst);
+                var qs = qst.questions;
+                console.log(qs);
+                questionnaireDiv.appendChild(qs);
             }
 
             return questionnaireDiv;
@@ -35,26 +39,32 @@ var QuestionnaireJS = (function() {
 
     function QuestionSet(definition) {
         var localQuestionsArray = [];
-        for (var i = 0; i < definition.questionDefinitions.length; i++) {
-            localQuestionsArray.push(new Question(definition.questionDefinitions[i]));
-        }
+        if(definition && definition.questions) {
 
-        this.questions = (function() {
-            var legend = document.createElement("legend");
-            legend.setAttribute("class", "legend");
-            legend.innerHTML = definition.label;
-
-            var fieldset = document.createElement("fieldset");
-            fieldset.setAttribute("class", "fieldset");
-            fieldset.appendChild(legend);
-
-            for (var i = 0; i < localQuestionsArray.length; i++){
-                var questionDiv = localQuestionsArray[i].question;
-                fieldset.appendChild(questionDiv);
+            for (var i = 0; i < definition.questions.length; i++) {
+                localQuestionsArray.push(new Question(definition.questions[i]));
             }
 
-            return fieldset;
-        })()
+
+            this.questions = (
+                function() {
+                    var legend = document.createElement("legend");
+                    legend.setAttribute("class", "legend");
+                    legend.innerHTML = definition.label;
+
+                    var fieldset = document.createElement("fieldset");
+                    fieldset.setAttribute("class", "fieldset");
+                    fieldset.appendChild(legend);
+
+                    for (var i = 0; i < localQuestionsArray.length; i++){
+                        var questionDiv = localQuestionsArray[i].question;
+                        fieldset.appendChild(questionDiv);
+                    }
+
+                    return fieldset;
+                }()
+            )
+        }
     }
 
     function Question(definition) {
@@ -73,9 +83,9 @@ var QuestionnaireJS = (function() {
             questionDiv.appendChild(questionText);
             questionDiv.appendChild(input);
 
-            if(definition.questionSetDefinitions != null) {
-                for (var i = 0; i < definition.questionSetDefinitions.length; i++) {
-                    var subQuestionSet = new QuestionSet(definition.questionSetDefinitions[i]);
+            if(definition.questionSet != null) {
+                for (var i = 0; i < definition.questionSet.length; i++) {
+                    var subQuestionSet = new QuestionSet(definition.questionSet[i]);
                     questionDiv.appendChild(subQuestionSet.questions);
                 }
             }
@@ -139,20 +149,35 @@ var QuestionnaireJS = (function() {
                 var checkboxUl = document.createElement("ul");
                 checkboxUl.setAttribute("class", "checkboxUl");
 
-                for(var i = 0; i < questionDefinition.values.length; i++) {
+                var choices = questionDefinition.choices;
+
+                for(var j = 0; j < choices.values.length; j++) {
                     var checkboxLi = document.createElement("li");
                     checkboxLi.setAttribute("class", "checkboxLi");
 
                     var checkbox = document.createElement("INPUT");
                     checkbox.setAttribute("type", "checkbox");
                     checkbox.setAttribute("name", questionDefinition.name);
-                    checkbox.setAttribute("value", questionDefinition.values[i]);
+                    //checkbox.setAttribute("value", choices.values[i]);
+                    checkbox.onclick = toggleSubQuestionSets;
+
                     checkboxLi.appendChild(checkbox);
 
                     var checkboxText = document.createElement("span");
-                    checkboxText.innerHTML = questionDefinition.texts[i];
+                    var choiceValue = choices.values[j];
+                    checkboxText.innerHTML = choiceValue.text;
                     checkboxText.setAttribute("class", "checkboxText");
                     checkboxLi.appendChild(checkboxText);
+
+                    var setOfQuestions = choiceValue.questions;
+                    if(setOfQuestions != null && setOfQuestions.length > 0) {
+                        for (var k = 0; k < setOfQuestions.length; k++) {
+                            var questionSet = new QuestionSet(setOfQuestions[k]);
+                            var questions = questionSet.questions;
+                            questions.setAttribute("hidden", "true");
+                            checkboxLi.appendChild(questions);
+                        }
+                    }
 
                     checkboxUl.appendChild(checkboxLi);
                 }
@@ -163,6 +188,14 @@ var QuestionnaireJS = (function() {
         }
 
 
+    }
+
+    function toggleSubQuestionSets(e) {
+        var children = e.target.parentElement.children
+        if (children.length == 3) {
+            var lastChild = e.target.parentElement.lastChild;
+            lastChild.hidden = !lastChild.hidden;
+        }
     }
 
     function getResponse() {
