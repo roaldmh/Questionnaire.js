@@ -225,6 +225,7 @@ var QuestionnaireJS = (function() {
     }
 
     function getAnswer(div)  {
+        var answers = [];
         var answer = "";
         var input = div.lastChild;
         var inputStyleClass = input.getAttribute("class");
@@ -236,25 +237,23 @@ var QuestionnaireJS = (function() {
                 answer = input.value;
                 break;
             case "radioUl":
-                var liList = input.getElementsByTagName("li");
-                var answers = [];
-                for (var i = 0; i < liList.length; i++) {
-                    var li = liList[i];
-                    var checkBox = li.firstChild;
-                    if(checkBox.checked) {
-                        answer = li.lastChild.innerHTML;
+                var liListRadio = input.getElementsByTagName("li");
+                for (var i = 0; i < liListRadio.length; i++) {
+                    var liRadio = liListRadio[i];
+                    var radio = liRadio.firstChild;
+                    if(radio.checked) {
+                        answer = liRadio.lastChild.innerHTML;
                         break;
                     }
                 }
                 break;
             case "checkboxUl":
-                var liList = input.getElementsByTagName("li");
-                var answers = [];
-                for (var i = 0; i < liList.length; i++) {
-                    var li = liList[i];
-                    var checkBox = li.firstChild;
+                var liListCheckbox = input.getElementsByTagName("li");
+                for (var j = 0; j < liListCheckbox.length; j++) {
+                    var liCheckbox = liListCheckbox[j];
+                    var checkBox = liCheckbox.firstChild;
                     if(checkBox.checked) {
-                        var children = li.children;
+                        var children = liCheckbox.children;
                         answers.push(children[1].innerHTML);
                     }
                 }
