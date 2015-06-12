@@ -1,14 +1,23 @@
 /**
- * Created by rmh on 09.06.15.
+ * Here you create your questions. Follow the same pattern as these examples.
+ *
+ * For inputType 'checkbox', you will have to give some choices and observe the
+ * empty array assigned to each choice. This will be filled with question sets if
+ * it is needed from 'mapping.js'.
+ *
+ *
+ * Created by Roald Martin Hamnvik on 09.06.15.
  */
 
 
-// --- QUESTION --- ): question
+// --- QUESTION ---
+
+"use strict";
 
 var questions = (function() {
     return {
         questionName:  {
-            id:"questionSet01question01",
+            id:"questionName",
             valueType: "characters",
             numChar: 2000,
             text: "Name:",
@@ -16,7 +25,7 @@ var questions = (function() {
         },
 
         questionAge:  {
-            id:"questionSet01question02",
+            id:"questionAge",
             valueType: "number",
             numChar: 3,
             text: "Age:",
@@ -24,7 +33,7 @@ var questions = (function() {
         },
 
         questionAboutYourself:  {
-            id:"questionSet01question03",
+            id:"questionAboutYourself",
             valueType: "characters",
             numChar: 2000,
             text: "Tell us about yourself:",
@@ -32,7 +41,7 @@ var questions = (function() {
         },
 
         questionGender:  {
-            id:"questionSet01question04",
+            id:"questionGender",
             valueType: "characters",
             numChar: 2000,
             text: "Gender:",
@@ -43,8 +52,8 @@ var questions = (function() {
             texts: ["Man", "Woman"]
         },
 
-        questionAdresse:  {
-            id:"questionSet02question01",
+        questionAddress:  {
+            id:"questionAddress",
             valueType: "characters",
             numChar: 2000,
             text: "Adresse:",
@@ -52,7 +61,7 @@ var questions = (function() {
         },
 
         questionZipCode:  {
-            id:"questionSet02question02",
+            id:"questionZipCode",
             valueType: "characters",
             numChar: 2000,
             text: "Zip code:",
@@ -60,37 +69,47 @@ var questions = (function() {
         },
 
         questionCity:  {
-            id:"questionSet02question03",
+            id:"questionCity",
             valueType: "characters",
             numChar: 2000,
             text: "City:",
             inputType: "text"
         },
 
-        naturalSciencesQuestion:  {
-            id:"naturalSciences",
+        questionNaturalSciences:  {
+            id:"questionNaturalSciences",
             valueType: "characters",
             numChar: 2000,
             text: "Study programs:",
-            inputType: "checkbox"
+            inputType: "checkbox",
 
-            //name: "StudyPrograms",
-            //values: ["mathematics", "physics", "biology"],
-            //texts: [ // TODO: hvordan definere dette?
-            //    {
-            //        text: "Physics"
-            //    },
-            //    {
-            //        text: "Mathematics"
-            //    },
-            //    {
-            //        text: "Biology"
-            //    }
-            //]
+            choices: {
+                id: "choiceZoology",
+                values: [
+                    {
+                        text: "Physics",
+                        name: "naturalSciencePhysics",
+                        value: "physics",
+                        questions: []
+                    },
+                    {
+                        text: "Mathematics",
+                        name: "naturalScienceMathematics",
+                        value: "mathematics",
+                        questions: []
+                    },
+                    {
+                        text: "Biology",
+                        name: "naturalScienceBiology",
+                        value: "biology",
+                        questions: []
+                    }
+                ]
+            }
         },
 
         questionZoology:  {
-            id:"zoologyCoursesQuestion01",
+            id:"questionZoology",
             valueType: "characters",
             numChar: 2000,
             text: "Zoology courses:",
@@ -98,15 +117,16 @@ var questions = (function() {
 
             choices: {
                 id: "choiceZoology",
-                name:"zoology",
                 values: [
                     {
                         text: "Terrestrial",
+                        name: "terrestrialZoology",
                         value: "terrestrial",
                         questions: []
                     },
                     {
                         text: "Marine",
+                        name: "marineZoology",
                         value: "marine",
                         questions: []
                     }
@@ -115,7 +135,7 @@ var questions = (function() {
         },
 
         questionBotany:  {
-            id: "questionSet03question02",
+            id: "questionBotany",
             valueType: "characters",
             numChar: 2000,
             text: "Botany:",
@@ -123,15 +143,16 @@ var questions = (function() {
 
             choices: {
                 id: "choiceBotany",
-                name:"botany",
                 values: [
                     {
                         text: "Terrestrial",
+                        name: "terrestrialBotany",
                         value: "terrestrial",
                         questions: []
                     },
                     {
                         text: "Marine",
+                        name: "marineBotany",
                         value: "marine",
                         questions: []
                     }
@@ -140,7 +161,7 @@ var questions = (function() {
         },
 
         questionHumanBiology:  {
-            id:"questionSet03question03",
+            id:"questionHumanBiology",
             valueType: "characters",
             numChar: 2000,
             text: "Human biology:",
@@ -148,15 +169,16 @@ var questions = (function() {
 
             choices: {
                 id: "choiceHumanBiology",
-                name:"humanBiology",
                 values: [
                     {
                         text: "Anatomy",
+                        name: "humanAnatomy",
                         value: "anatomy",
                         questions: []
                     },
                     {
                         text: "Physiology",
+                        name: "humanPhysiology",
                         value: "physiology",
                         questions: []
                     }

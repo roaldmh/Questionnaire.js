@@ -1,13 +1,19 @@
 /**
- * Created by rmh on 09.06.15.
+ * Create your sets of questions here. 'id' and 'label' must have values
+ * and questions should be an empty array. This empty array will be filled from
+ * 'mapping.js' if it is needed.
+ *
+ * Created by Roald Martin Hamnvik on 01.06.15.
  */
 
 // --- QUESTION SET (fieldset) ---
 
+"use strict";
+
 var questionSets = (function () {
     return {
-        personalInformationSet: {
 
+        personalInformationSet: {
             id: "personalInformation",
             label: "Personal information",
             questions: []

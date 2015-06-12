@@ -1,5 +1,14 @@
 /**
  * Created by Roald Martin Hamnvik on 01.06.15.
+ *
+ * This JavaScript library builds a the content for a questionnaire form
+ * based on a definition given as a JSON string and gives gave another JSON string
+ * with all the answers mapped to the questions.
+ *
+ * It is implemented as a IIFE that give you an object with two methods:
+ *  - QuestionnaireJS.build(definition) that builds the form content for the questionnaire
+ *  - QuestionnaireJS.response() that gives the response as a JSON string
+ *
  */
 
 "use strict";
@@ -26,11 +35,7 @@ var QuestionnaireJS = (function() {
             questionnaireDiv.appendChild(titleHeading);
 
             for (var j = 0; j < questionSets.length; j++) {
-                var qst = questionSets[j];
-                console.log(qst);
-                var qs = qst.questions;
-                console.log(qs);
-                questionnaireDiv.appendChild(qs);
+                questionnaireDiv.appendChild(questionSets[j].questions);
             }
 
             return questionnaireDiv;
@@ -40,11 +45,9 @@ var QuestionnaireJS = (function() {
     function QuestionSet(definition) {
         var localQuestionsArray = [];
         if(definition && definition.questions) {
-
             for (var i = 0; i < definition.questions.length; i++) {
                 localQuestionsArray.push(new Question(definition.questions[i]));
             }
-
 
             this.questions = (
                 function() {
@@ -69,9 +72,7 @@ var QuestionnaireJS = (function() {
 
     function Question(definition) {
         this.question = (function() {
-
             var input = createInput(definition);
-
 
             var questionText = document.createElement("p");
             questionText.innerHTML = definition.text;
@@ -111,6 +112,7 @@ var QuestionnaireJS = (function() {
 
 // --- FUNCTIONS ---
 
+    // A few of HTML input are supported so far
     function createInput(questionDefinition) {
         switch (questionDefinition.inputType) {
             case "text":
@@ -122,10 +124,11 @@ var QuestionnaireJS = (function() {
                 var textarea = document.createElement("TEXTAREA");
                 textarea.setAttribute("class", "textarea");
                 return textarea;
-            case "radio":
+            case "radio": // Makes a question and several possible answers as a set of radio buttons
                 var radioUl = document.createElement("ul");
                 radioUl.setAttribute("class", "radioUl");
 
+                // possible answers
                 for(var i = 0; i < questionDefinition.values.length; i++) {
                     var radioLi = document.createElement("li");
                     radioLi.setAttribute("class", "radioLi");
@@ -145,26 +148,26 @@ var QuestionnaireJS = (function() {
                 }
 
                 return radioUl;
-            case "checkbox":
+            case "checkbox": // Makes a question and several possible answers as a set of checkboxes
                 var checkboxUl = document.createElement("ul");
                 checkboxUl.setAttribute("class", "checkboxUl");
 
+                // possible answers
                 var choices = questionDefinition.choices;
-
                 for(var j = 0; j < choices.values.length; j++) {
+                    var choiceValue = choices.values[j];
+
                     var checkboxLi = document.createElement("li");
                     checkboxLi.setAttribute("class", "checkboxLi");
 
                     var checkbox = document.createElement("INPUT");
                     checkbox.setAttribute("type", "checkbox");
-                    checkbox.setAttribute("name", questionDefinition.name);
-                    //checkbox.setAttribute("value", choices.values[i]);
-                    checkbox.onclick = toggleSubQuestionSets;
+                    checkbox.setAttribute("name", choiceValue.name);
+                    checkbox.onclick = toggleSubQuestionSets; // Show hide sub-fieldsets
 
                     checkboxLi.appendChild(checkbox);
 
                     var checkboxText = document.createElement("span");
-                    var choiceValue = choices.values[j];
                     checkboxText.innerHTML = choiceValue.text;
                     checkboxText.setAttribute("class", "checkboxText");
                     checkboxLi.appendChild(checkboxText);
@@ -186,10 +189,9 @@ var QuestionnaireJS = (function() {
             default:
                 throw new QuestionnaireJsError("Input type not supported: " + questionDefinition.inputType);
         }
-
-
     }
 
+    // Show hide sub-fieldsets
     function toggleSubQuestionSets(e) {
         var children = e.target.parentElement.children;
         if (children.length >= 3) {
@@ -224,17 +226,23 @@ var QuestionnaireJS = (function() {
         return answers
     }
 
+    // Includes basic validation
     function getAnswer(div)  {
-        var answers = [];
         var answer = "";
         var input = div.lastChild;
         var inputStyleClass = input.getAttribute("class");
         switch(inputStyleClass) {
             case "textInput":
                 answer = input.value;
+                if(answer == null || answer.trim().length == 0) {
+                    alert("Question '" + div.firstChild.innerHTML + "' must be filled in");
+                }
                 break;
             case "textarea":
                 answer = input.value;
+                if(answer == null || answer.trim().length == 0) {
+                    alert("Question '" + div.firstChild.innerHTML + "' must be filled in");
+                }
                 break;
             case "radioUl":
                 var liListRadio = input.getElementsByTagName("li");
@@ -246,8 +254,12 @@ var QuestionnaireJS = (function() {
                         break;
                     }
                 }
+                if(answer == null || answer.trim().length == 0) {
+                    alert("Question '" + div.firstChild.innerHTML + "' must be filled in");
+                }
                 break;
             case "checkboxUl":
+                var answers = [];
                 var liListCheckbox = input.getElementsByTagName("li");
                 for (var j = 0; j < liListCheckbox.length; j++) {
                     var liCheckbox = liListCheckbox[j];
@@ -258,6 +270,10 @@ var QuestionnaireJS = (function() {
                     }
                 }
                 answer = answers;
+
+                if(answers.length == 0 ) {
+                    alert("At least one option in the question '" + div.firstChild.innerHTML + "' must be selected");
+                }
                 break;
             default:
                 throw new QuestionnaireJsError("Input type not supported: " + input.inputType);
