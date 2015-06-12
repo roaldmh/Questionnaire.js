@@ -191,10 +191,12 @@ var QuestionnaireJS = (function() {
     }
 
     function toggleSubQuestionSets(e) {
-        var children = e.target.parentElement.children
-        if (children.length == 3) {
-            var lastChild = e.target.parentElement.lastChild;
-            lastChild.hidden = !lastChild.hidden;
+        var children = e.target.parentElement.children;
+        if (children.length >= 3) {
+            for (var i = 2; i < children.length; i++) {
+                var child = children[i];
+                child.hidden = !child.hidden;
+            }
         }
     }
 
@@ -252,7 +254,8 @@ var QuestionnaireJS = (function() {
                     var li = liList[i];
                     var checkBox = li.firstChild;
                     if(checkBox.checked) {
-                        answers.push(li.lastChild.innerHTML);
+                        var children = li.children;
+                        answers.push(children[1].innerHTML);
                     }
                 }
                 answer = answers;
